@@ -29,7 +29,7 @@ extern PWList * pwlist_new(char*);
 extern PWSearchResult * uilist_get_highlighted_searchresult();
 extern char *pwgen_ask();
 
-int disp_h = 15, disp_w = 60;
+int disp_h = 15, disp_w = 80;
 extern int curitem;
 extern WINDOW *bottom;
 
