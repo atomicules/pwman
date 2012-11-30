@@ -1,12 +1,13 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([src/ui.c])
+AC_INIT
+AC_CONFIG_SRCDIR([src/ui.c])
 AM_INIT_AUTOMAKE(pwman, 0.4.4)
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([pwman.spec])
 
 # Checks for programs.
 AC_PROG_CC
-AC_ISC_POSIX
+AC_SEARCH_LIBS([strerror],[cposix])
 
 AC_CHECK_HEADERS(unistd.h locale.h termios.h linux/termios.h sys/ioctl.h string.h)
 
@@ -102,4 +103,5 @@ AC_TYPE_SIZE_T
 
 # Checks for library functions.
 
-AC_OUTPUT([Makefile src/Makefile doc/Makefile]) 
+AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile])
+AC_OUTPUT 
