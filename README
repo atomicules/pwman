@@ -31,6 +31,26 @@ INSTALLATION REQUIREMENTS
   % sudo yum install glibc-devel ncurses-devel libxml2-devel gcc
 
 
+PRE-COMPILATION
+
+ If building from the repository source, as opposed to a zipped (*.tar.gz)
+ release it will be necessary to generate the Makefile and configure file in
+ order to proceed with complition and installation. Run:
+
+ % automake --add-missing
+
+ Depening on your version of automake, you may receive a warning such as "You
+ should recreate aclocal.m4 with aclocal and run automake again", in which case
+ run:
+
+ % aclocal 
+ % automake --add-missing
+ 
+ Finally run: 
+
+ % autoconf
+
+ 
 COMPILATION AND INSTALLATION
 
  All tasks related to compilation, deployment etc. are managed by the C
