@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir) -I$(includedir) \
+AM_CPPFLAGS = -I$(top_srcdir) -I$(includedir) \
 	  -DG_LOG_DOMAIN=\"pwman\" 
 		
 bin_PROGRAMS = pwman convert_pwdb pwdb2csv
