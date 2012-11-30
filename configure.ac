@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT
+AC_INIT(pwman, 0.4.4)
 AC_CONFIG_SRCDIR([src/ui.c])
-AM_INIT_AUTOMAKE(pwman, 0.4.4)
+AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([pwman.spec])
 
