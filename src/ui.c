@@ -462,7 +462,11 @@ ui_statusline_ask_str(char *msg, char *input, int len)
 	char *tmp;
 	char *tmp2;
 	char *tmp3;
+	char oldinput[strlen(input)];
 	int x = strlen(msg) + 5;
+
+	//Back-up the old value	
+	strcpy(oldinput, input);
 
 	if(input == NULL){
 		input = malloc(len);
@@ -477,6 +481,11 @@ ui_statusline_ask_str(char *msg, char *input, int len)
 	hide_cursor();
 
 	ui_statusline_clear();
+
+	//If just return entered, don't overwrite old value
+	if(strlen(input) == 0){
+		strcpy(input, oldinput);
+	}
 
 	// Tabs don't play nicely with ncurses or xml
 	// So, swap any for (a single) space
