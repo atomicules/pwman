@@ -462,9 +462,10 @@ ui_statusline_ask_str(char *msg, char *input, int len)
 	char *tmp;
 	char *tmp2;
 	char *tmp3;
-	char oldinput[strlen(input)];
+	char *oldinput;
 	int x = strlen(msg) + 5;
 
+	oldinput = malloc(strlen(input)+1);
 	//Back-up the old value	
 	strcpy(oldinput, input);
 
@@ -525,6 +526,7 @@ ui_statusline_ask_str(char *msg, char *input, int len)
 	}
 	
 	// All done
+	free(oldinput);
 	return input;
 }
 
@@ -534,7 +536,12 @@ ui_statusline_ask_str_with_autogen(char *msg, char *input, int len, char *(*auto
 	int i = 0;
 	int c;
 	char *text[2], *s;
+	char *oldinput;
 	int x;
+
+	oldinput = malloc(strlen(input)+1);
+	//Back-up the old value	
+	strcpy(oldinput, input);
 
 	if(input == NULL){
 		input = malloc(len);
@@ -582,8 +589,14 @@ ui_statusline_ask_str_with_autogen(char *msg, char *input, int len, char *(*auto
 	
 	ui_statusline_clear();
 
+	//If just return entered, don't overwrite old value
+	if(strlen(input) == 0){
+		strcpy(input, oldinput);
+	}
+
 	free(text[0]);
 	free(text[1]);
+	free(oldinput);
 
 	return input;
 }
