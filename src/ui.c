@@ -23,6 +23,7 @@
 #include <help.h>
 #include <time.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 char * statusline_ask_str(char *, char*, int);
 Pw *get_highlighted_item();
@@ -185,6 +186,11 @@ ui_run()
 	int ch;
 	int i = 0;
 	int load_worked = 0;
+	int secret_key_message = 0;
+	struct stat st;
+	char secring[STRING_LONG];
+	strcpy(secring, getenv("HOME"));
+	strcat(secring, "/.gnupg/secring.gpg");
 #ifdef DEBUG
 	int debug_i = 0;
 #endif
@@ -208,11 +214,24 @@ ui_run()
 
 			ui_statusline_msg("Passphrase has timed out and you must enter it again.");
 			getch();
+			// Try to avoid segfault if secring isn't available
+			// Need to check for 0 byte file size since something in pwlist_write_file() "touches" it
+			stat(secring, &st);
+			while ( st.st_size == 0 ) {
+				if (secret_key_message == 0) {
+					ui_statusline_msg("Secret key not available... Waiting until it is");
+					secret_key_message = 1;
+				}
+				stat(secring, &st);
+				sleep(1);
+			}
+			secret_key_message = 0;
 			
 			load_worked = pwlist_read_file();
 			if(load_worked != 0) {
 				ui_statusline_msg("Error - unable to re-load the password file!");
 				break;
+				// It segfaults here.
 			}
 
 			time_base = time(NULL);
