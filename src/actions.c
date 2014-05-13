@@ -519,58 +519,52 @@ action_list_move_item()
 	int i;
 	char str[STRING_LONG];
 	char answer[STRING_MEDIUM];
+	int sublistfound;
 
 	switch(uilist_get_highlighted_type()){
 		case PW_ITEM:
 			curpw = uilist_get_highlighted_item();
 			if(curpw){
-				while(1){
-					snprintf(str, STRING_LONG, "Move \"%s\" to where?", curpw->name);
-					ui_statusline_ask_str(str, answer, STRING_MEDIUM);
-					
-					/* if user just enters nothing do nothing */
-					if(answer[0] == 0){
-						return 0;
+				sublistfound = 0;
+				snprintf(str, STRING_LONG, "Move \"%s\" to where?", curpw->name);
+				ui_statusline_ask_str(str, answer, STRING_MEDIUM);
+				
+				for(iter = current_pw_sublist->sublists; iter != NULL; iter = iter->next){
+					if( strcmp(iter->name, answer) == 0 ){
+						pwlist_detach_pw(current_pw_sublist, curpw);
+						pwlist_add_ptr(iter, curpw);
+						uilist_refresh();
+						sublistfound = 1;
 					}
-					
-					for(iter = current_pw_sublist->sublists; iter != NULL; iter = iter->next){
-						if( strcmp(iter->name, answer) == 0 ){
-							pwlist_detach_pw(current_pw_sublist, curpw);
-							pwlist_add_ptr(iter, curpw);
-							uilist_refresh();
-							return 0;
-						}
-					}
+				}
+				/* then only do this if not found */
+				if ( sublistfound == 0 ){
 					ui_statusline_msg("Sublist does not exist, try again");
 					getch();
+					ui_statusline_clear();
 				}
 			}
 			break;
 		case PW_SUBLIST:
 			curpwl = uilist_get_highlighted_sublist();
 			if(curpwl){
-				while(1){
-					snprintf(str, STRING_LONG, "Move sublist \"%s\" to where?", curpwl->name);
-					ui_statusline_ask_str(str, answer, STRING_MEDIUM);
-					
-					/* if user just enters nothing, do nothing */
-					if(answer[0] == 0){
-						return 0;
+				sublistfound = 0;
+				snprintf(str, STRING_LONG, "Move sublist \"%s\" to where?", curpwl->name);
+				ui_statusline_ask_str(str, answer, STRING_MEDIUM);
+				
+				for(iter = current_pw_sublist->sublists; iter != NULL; iter = iter->next){
+					if( strcmp(iter->name, answer) == 0 ){
+						pwlist_detach_sublist(current_pw_sublist, curpwl);
+						pwlist_add_sublist(iter, curpwl);
+						uilist_refresh();
+						sublistfound = 1;
 					}
-					if( strcmp(answer, curpwl->name) == 0 ){
-						return 0;
-					}
-
-					for(iter = current_pw_sublist->sublists; iter != NULL; iter = iter->next){
-						if( strcmp(iter->name, answer) == 0 ){
-							pwlist_detach_sublist(current_pw_sublist, curpwl);
-							pwlist_add_sublist(iter, curpwl);
-							uilist_refresh();
-							return 0;
-						}
-					}
+				}
+				/* then only do this if not found */
+				if ( sublistfound == 0 ){
 					ui_statusline_msg("Sublist does not exist, try again");
 					getch();
+					ui_statusline_clear();
 				}
 			}
 			break;
