@@ -5,7 +5,6 @@ include config.mk
 SRC_PWMAN = actions.c filter.c gnupg.c gnupg.h help.h launch.c misc.c options.c pwgen.c pwlist.c pwman.c pwman.h search.c ui.c ui.h uilist.c
 SRC_CONVERT_PWDB = convert_pwdb.c
 SRC_PWDB2CSV = pwdb2csv.c
-# This one isn't currently used: import_export.c
 OBJ_PWMAN = ${SRC_PWMAN:.c=.o}
 OBJ_CONVERT_PWDB = ${SRC_CONVERT_PWDB:.c=.o}
 OBJ_PWDB2CSV = ${SRC_PWDB2CSV:.c=.o}
