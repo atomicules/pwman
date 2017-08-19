@@ -213,6 +213,14 @@ action_input_dialog_draw_items(WINDOW* dialog_win, InputField *fields,
 		if(fields[i].type == STRING){
 			mvwprintw(dialog_win, h, 3,
 				"%d - %s %s", (i+1), fields[i].name, (char*)fields[i].value);
+			if(fields[i].name == "Password:\t"){
+				/* Print out a guide beneath password to help with picking individual characters
+				 * I could have changed the string format, but for ease of horizontal alignment
+				 * was easy to do as per password and then replace characters with spaces
+				 */
+				mvwprintw(dialog_win, h+1, 3,
+					"%s   %s %s", " ", "         \t", "1234567890123456789012345678901234567890");
+			}
 		} else if(fields[i].type == INT){
 			mvwprintw(dialog_win, h, 3,
 				"%d - %s %d", (i+1), fields[i].name, *((int*)fields[i].value) );
